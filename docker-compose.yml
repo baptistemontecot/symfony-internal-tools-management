@@ -105,6 +105,26 @@ services:
       - postgres
       - all
 
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./api/:/var/www/html
+      - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    networks:
+      - internal-tools-net
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/:/var/www/html
+    networks:
+      - internal-tools-net
+
 # =============================================
 # VOLUMES & NETWORKS
 # =============================================
