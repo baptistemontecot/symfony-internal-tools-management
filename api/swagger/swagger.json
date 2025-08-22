@@ -1,0 +1,33 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Internal Tools Management",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api",
+            "description": "API de gestion des outils internes"
+        }
+    ],
+    "paths": {
+        "/tools": {
+            "get": {
+                "operationId": "c82f9b20a134cf25649335f99050db0d",
+                "responses": {
+                    "200": {
+                        "description": "Nos outils",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "Nom du premier outil",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: 'API Internal Tools Management'
+  version: '1.0'
+servers:
+  -
+    url: 'http://localhost:8000/api'
+    description: 'API de gestion des outils internes'
+paths:
+  /tools:
+    get:
+      operationId: 64455391b756ca590b5bb8481a2c4b60
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'Le numéro de la page consultée'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Nos outils'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+  '/tools/{id}':
+    get:
+      operationId: 712cb94698613e5bc9b0e6c2e60b0757
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID de notre outil'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Notre outil'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tool'
+components:
+  schemas:
+    Category:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        color_hex:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+      type: object
+    Tool:
+      required:
+        - id
+        - name
+        - category_id
+        - monthly_cost
+        - active_users_count
+        - owner_department
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        vendor:
+          type: string
+          nullable: true
+        website_url:
+          type: string
+          nullable: true
+        monthly_cost:
+          type: string
+          pattern: '^\d+(\.\d{1,2})?$'
+        active_users_count:
+          type: boolean
+          nullable: true
+        owner_department:
+          type: string
+          nullable: true
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+      type: object
