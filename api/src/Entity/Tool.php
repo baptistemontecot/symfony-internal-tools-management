@@ -2,55 +2,129 @@
 
 namespace App\Entity;
 
-use App\Enum\DepartmentType;
 use App\Enum\StatusType;
-use App\Repository\ToolRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeImmutable;
+use App\Enum\DepartmentType;
+use OpenApi\Annotations as OA;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ToolRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+
+/**
+ * @OA\Schema(
+ *     schema="Tool",
+ *     type="object",
+ *     required={"id", "name", "category_id", "monthly_cost", "active_users_count", "owner_department"}
+ * )
+ */
 #[ORM\Entity(repositoryClass: ToolRepository::class)]
 #[ORM\Table(name: 'tools')]
 class Tool
 {
+    /**
+     * @OA\Property(type="integer")
+     * @var ?int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id')]
+    #[Groups(['tools.index'])]
     private ?int $id = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?string
+     */
     #[ORM\Column(name: 'name', length: 100)]
+    #[Groups(['tools.index'])]
     private ?string $name = null;
 
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var string|NULL
+     */
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+    #[Groups(['tools.index'])]
     private ?string $description = null;
 
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var string|NULL
+     */
     #[ORM\Column(name: 'vendor', length: 100, nullable: true)]
+    #[Groups(['tools.index'])]
     private ?string $vendor = null;
 
-    #[ORM\Column(name: 'website_url', length: 255)]
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var string|NULL
+     */
+    #[ORM\Column(name: 'website_url', length: 255, nullable: true)]
+    #[Groups(['tools.index'])]
     private ?string $website_url = null;
 
+//    /**
+//     * @OA\Property(ref: '#/components/schemas/Category')
+//     * @var ?Category
+//     */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'category_id', nullable: false)]
+    #[Groups(['tools.index'])]
     private ?Category $category_id = null;
 
+    /**
+     * @OA\Property(
+     *     type="string",
+     *     pattern="^\d+(\.\d{1,2})?$",
+     * )
+     * @var string|NULL
+     */
     #[ORM\Column(name: 'monthly_cost', type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Groups(['tools.index'])]
     private ?string $monthly_cost = null;
 
+    /**
+     * @OA\Property(type="boolean", nullable=true)
+     * @var int|NULL
+     */
     #[ORM\Column(name: 'active_users_count', type: Types::BOOLEAN, nullable: true)]
+    #[Groups(['tools.index'])]
     private ?int $active_users_count = null;
 
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var ?DepartmentType|NULL
+     */
     #[ORM\Column(name: 'owner_department', nullable: true, enumType: DepartmentType::class)]
+    #[Groups(['tools.index'])]
     private ?DepartmentType $owner_department = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?StatusType|NULL
+     */
     #[ORM\Column(name: 'status', nullable: false, enumType: StatusType::class)]
+    #[Groups(['tools.index'])]
     private ?StatusType $status = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?DateTimeImmutable|NULL
+     */
     #[ORM\Column(name: 'created_at', nullable: true)]
+    #[Groups(['tools.index'])]
     private ?\DateTimeImmutable $created_at = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?DateTimeImmutable|NULL
+     */
     #[ORM\Column(name: 'updated_at', nullable: true)]
+    #[Groups(['tools.show'])]
     private ?\DateTimeImmutable $updated_at = null;
 
     /**

@@ -2,28 +2,59 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use DateTimeImmutable;
+use OpenApi\Annotations as OA;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryRepository;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+/**
+ * @OA\Schema(
+ *     schema="Category",
+ *     type="object",
+ *     required={"id", "name"}
+ * )
+ */
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
 class Category
 {
+    /**
+     * @OA\Property(type="integer")
+     * @var ?int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id')]
     private ?int $id = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?string
+     */
     #[ORM\Column(name: 'name', length: 50)]
+    #[Groups(['tools.index'])]
     private ?string $name = null;
 
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var string|NULL
+     */
     #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    /**
+     * @OA\Property(type="string", nullable=true)
+     * @var string|NULL
+     */
     #[ORM\Column(name: 'color_hex', length: 7, nullable: true)]
     private ?string $color_hex = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?DateTimeImmutable|NULL
+     */
     #[ORM\Column(name: 'created_at', nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
