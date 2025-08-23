@@ -2,7 +2,7 @@
 
 echo "🔄 Resetting all database data..."
 
-read -p "⚠️  This will destroy ALL data in both databases. Continue? (y/N): " -n 1 -r
+read -p "⚠️  This will destroy ALL data in database. Continue? (y/N): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "🛑 Stopping all containers..."
@@ -12,7 +12,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     docker volume prune -f
     
     echo "✅ All data reset completed!"
-    echo "💡 Use './start-mysql.sh' or './start-postgres.sh' to restart"
+    echo "💡 Use './start-mysql.sh' to restart"
 else
     echo "❌ Reset cancelled"
 fi

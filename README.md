@@ -2,9 +2,9 @@
 
 Ready-to-use database environment for API development tests.
 
-## 🚀 Quick Start (Choose Your Stack)
+## 🚀 Quick Start
 
-### Option 1: MySQL + phpMyAdmin 
+### MySQL + phpMyAdmin 
 ```bash
 # Method 1: Script (recommended)
 chmod +x start-mysql.sh && ./start-mysql.sh
@@ -19,33 +19,26 @@ docker-compose --profile mysql up -d
 - 👤 **Credentials:** `dev / dev123`
 - 📊 **Database:** `internal_tools`
 
-### Option 2: PostgreSQL + pgAdmin 
-```bash
-# Method 1: Script (recommended)
-chmod +x start-postgres.sh && ./start-postgres.sh
+### Build and start PHP et Nginx containers
 
-# Method 2: Direct command  
-docker-compose --profile postgres up -d
+```bash
+  docker-compose up -d --build 
 ```
 
-**Access in 30 seconds:**
-- 🗄️ **PostgreSQL:** `localhost:5432` 
-- 🌐 **pgAdmin:** http://localhost:8081
-- 👤 **Credentials:** `dev / dev123`
-- 📊 **Database:** `internal_tools`
+**Access:**
+- 🌐 **Nginx (API server):** http://localhost:8000
+- 🔧 **Logs containers:**
 
-### Option 3: Both Databases (Testing)
 ```bash
-docker-compose --profile all up -d
+  docker-compose logs -f php
+  docker-compose logs -f nginx
 ```
-
-
 
 ## 🛠️ Quick Commands
 
 ```bash
 # Test connections
-./test-connections.sh
+./test-connection.sh
 
 # Stop everything
 docker-compose --profile all down
@@ -54,7 +47,7 @@ docker-compose --profile all down
 ./reset-all.sh
 
 # View logs
-docker-compose logs -f mysql     # or postgres
+docker-compose logs -f mysql
 ```
 
 ## 📊 Connection Strings
@@ -63,10 +56,6 @@ docker-compose logs -f mysql     # or postgres
 # MySQL
 mysql://dev:dev123@localhost:3306/internal_tools
 "mysql:host=localhost;port=3306;dbname=internal_tools"
-
-# PostgreSQL  
-postgresql://dev:dev123@localhost:5432/internal_tools
-"pgsql:host=localhost;port=5432;dbname=internal_tools"
 ```
 
 ---
@@ -78,13 +67,6 @@ postgresql://dev:dev123@localhost:5432/internal_tools
 docker-compose --profile mysql up -d
 # ✅ MySQL + phpMyAdmin prêts !
 # 🌐 Interface: http://localhost:8080
-```
-
-### **🐘 Pour PostgreSQL **  
-```bash
-docker-compose --profile postgres up -d
-# ✅ PostgreSQL + pgAdmin prêts !
-# 🌐 Interface: http://localhost:8081
 ```
 
 ### **🎯 Pour Tests Comparatifs**
