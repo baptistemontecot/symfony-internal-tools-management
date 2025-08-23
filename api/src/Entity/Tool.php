@@ -67,20 +67,12 @@ class Tool
     #[Groups(['tools.index'])]
     private ?string $website_url = null;
 
-//    /**
-//     * @OA\Property(ref: '#/components/schemas/Category')
-//     * @var ?Category
-//     */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'category_id', nullable: false)]
-    #[Groups(['tools.index'])]
     private ?Category $category_id = null;
 
     /**
-     * @OA\Property(
-     *     type="string",
-     *     pattern="^\d+(\.\d{1,2})?$",
-     * )
+     * @OA\Property(type="integer")
      * @var string|NULL
      */
     #[ORM\Column(name: 'monthly_cost', type: Types::DECIMAL, precision: 10, scale: 2)]
@@ -201,6 +193,12 @@ class Tool
         $this->category_id = $category_id;
 
         return $this;
+    }
+
+    #[Groups(['tools.index'])]
+    public function getCategory(): ?string
+    {
+        return $this->category_id?->getName() ?? null;
     }
 
     public function getMonthlyCost(): ?string

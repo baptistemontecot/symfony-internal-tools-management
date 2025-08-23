@@ -105,6 +105,9 @@ services:
       - postgres
       - all
 
+  # =============================================
+  # NGINX SERVEUR
+  # =============================================
   nginx:
     image: nginx:alpine
     ports:
@@ -116,6 +119,10 @@ services:
       - php
     networks:
       - internal-tools-net
+
+  # =============================================
+  # PHP
+  # =============================================
   php:
     build:
       context: .
