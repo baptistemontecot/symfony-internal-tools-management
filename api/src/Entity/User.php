@@ -2,44 +2,88 @@
 
 namespace App\Entity;
 
-use App\Enum\DepartmentType;
 use App\Enum\RoleType;
 use App\Enum\StatusType;
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Enum\DepartmentType;
 use Doctrine\DBAL\Types\Types;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     required={"id", "name", "email", "department"}
+ * )
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
+    /**
+     * @OA\Property(type="integer")
+     * @var ?int
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id')]
     private ?int $id = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?string
+     */
     #[ORM\Column(name: 'name', length: 100)]
     private ?string $name = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?string
+     */
     #[ORM\Column(name: 'email', length: 150)]
     private ?string $email = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?DepartmentType
+     */
     #[ORM\Column(name: 'department', enumType: DepartmentType::class)]
     private ?DepartmentType $department = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?array|NULL
+     */
     #[ORM\Column(name: 'role', type: Types::SIMPLE_ARRAY, nullable: true, enumType: RoleType::class)]
     private ?array $role = null;
 
+    /**
+     * @OA\Property(type="string")
+     * @var ?StatusType|NULL
+     */
     #[ORM\Column(name: 'status', nullable: true, enumType: StatusType::class)]
     private ?StatusType $status = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?\DateTime|NULL
+     */
     #[ORM\Column(name: 'hire_date', type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $hire_date = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?\DateTimeImmutable|NULL
+     */
     #[ORM\Column(name: 'created_at', nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
+    /**
+     * @OA\Property(type="string", format="date-time", nullable=true)
+     * @var ?\DateTimeImmutable|NULL
+     */
     #[ORM\Column(name: 'updated_at', nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 

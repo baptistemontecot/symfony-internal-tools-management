@@ -13,31 +13,64 @@
     "paths": {
         "/tools": {
             "get": {
+                "summary": "Liste paginée des outils disponibles",
                 "operationId": "64455391b756ca590b5bb8481a2c4b60",
                 "parameters": [
                     {
-                        "name": "page",
+                        "name": "department",
                         "in": "query",
-                        "description": "Le numéro de la page consultée",
+                        "description": "Département propriétaire",
                         "required": false,
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status de l'abonnement à l'outil",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Numéro de la page consultée",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Nombre d'éléments par page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 5
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Nos outils",
+                        "description": "Réponse paginée avec la liste des outils",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Tool"
-                                    }
+                                    "$ref": "#/components/schemas/PaginatedToolsResponse"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Paramètres invalides"
+                    },
+                    "404": {
+                        "description": "Aucun outil trouvé"
                     }
                 }
             }
@@ -52,7 +85,8 @@
                         "description": "ID de notre outil",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "default": "1"
                         }
                     }
                 ],
@@ -133,8 +167,7 @@
                         "nullable": true
                     },
                     "monthly_cost": {
-                        "type": "string",
-                        "pattern": "^\\d+(\\.\\d{1,2})?$"
+                        "type": "integer"
                     },
                     "active_users_count": {
                         "type": "boolean",
@@ -156,6 +189,74 @@
                         "type": "string",
                         "format": "date-time",
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "department"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "department": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginatedToolsResponse": {
+                "properties": {
+                    "data": {
+                        "description": "Liste d'outils paginée",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tool"
+                        }
+                    },
+                    "total": {
+                        "description": "Nombre total d'éléments disponibles",
+                        "type": "integer"
+                    },
+                    "page": {
+                        "description": "Numéro de la page courante",
+                        "type": "integer"
+                    },
+                    "lastPage": {
+                        "description": "Numéro de la dernière page",
+                        "type": "integer"
                     }
                 },
                 "type": "object"

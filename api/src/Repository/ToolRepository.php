@@ -17,11 +17,36 @@ class ToolRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tool::class);
     }
-
-    public function paginateTools(int $page, int $limit): PaginationInterface
+    public function paginateTools(array $filters, int $page, int $limit): PaginationInterface
     {
+        $qb = $this->createQueryBuilder('t');
+
+        if (!empty($filters['department'])) {
+            $qb->andWhere('t.owner_department = :department')
+                ->setParameter('department', $filters['department']);
+        }
+
+        if (!empty($filters['status'])) {
+            $qb->andWhere('t.status = :status')
+                ->setParameter('status', $filters['status']);
+        }
+
+        if (isset($filters['min_cost'])) {
+            $qb->andWhere('t.monthly_cost >= :minCost')
+                ->setParameter('minCost', $filters['min_cost']);
+        }
+        if (isset($filters['max_cost'])) {
+            $qb->andWhere('t.monthly_cost <= :maxCost')
+                ->setParameter('maxCost', $filters['max_cost']);
+        }
+        if (isset($filters['category'])) {
+            $qb->join('t.category_id', 'c')
+                ->andWhere('c.name = :category')
+                ->setParameter('category', $filters['category']);
+        }
+
         return $this->paginator->paginate(
-            $this->createQueryBuilder('t'),
+            $qb,
             $page,
             $limit
         );
